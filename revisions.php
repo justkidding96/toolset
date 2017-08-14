@@ -164,14 +164,17 @@ class Revision
 	 */
 	public function destroy($data)
 	{
+		// Get query class
+		global $wpdb;
+		
 		// Check if we got IDS
 		if (array_key_exists('ID', $data)) {
 			$ids = implode( ',', array_map('absint', $data['ID']));
-			$wpdb->query( "DELETE FROM wp_posts WHERE ID IN($ids)");
-		}
+			$wpdb->query("DELETE FROM wp_postmeta WHERE post_id IN($ids)");
+			$wpdb->query("DELETE FROM wp_posts WHERE ID IN($ids)");
 
-		// // Delete the items
-		// foreach ($data['ID'] as $value) {
-		// }
+			// Refresh
+			echo "<meta http-equiv='refresh' content='0'>";
+		}
 	}
 }
